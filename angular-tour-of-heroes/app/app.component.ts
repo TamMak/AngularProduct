@@ -1,12 +1,14 @@
 
 
 import { Component } from '@angular/core';
+import { Product } from './product';
 
-export class Product {
-   id: number;
-  name: string;
-  description: string;
-}
+
+//export class Product {
+//   id: number;
+//  name: string;
+//  description: string;
+//}
 
  const PRODUCTS: Product[] = [
         { id: 1, name: 'Space vehicle', description:'A space vehicle is a rocket-powered vehicle' }
@@ -52,8 +54,8 @@ export class Product {
 //to access a hero’s properties.-->
   
    selector: 'my-app',
-  template:`<h2>{{title}}</h2>
-  
+   template:`<h1>{{title}}</h1>
+              <h2>My Products</h2>
            <ul class="products"> 
                 <li *ngFor = "let product of products"
                       [class.selected]="product === selectedproduct"
@@ -63,17 +65,8 @@ export class Product {
                           {{product.description}}
                 </li>
             </ul>
-  
-   <div *ngIf="selectedProduct">
-            <h2>{{selectedProduct.name}}!</h2>
-          <div><label>Id: </label>
-              {{selectedProduct.id}}
-          </div>
-          <div>
-              <label>Name: </label>
-              <input [(ngModel)]="selectedproduct.name" placeholder="name"/>
-          </div>
-        </div>   `,
+  <my-product-detail>[product]="selectedProduct"></my-product-detail>`
+  ,
 
       styles: [
                  `
