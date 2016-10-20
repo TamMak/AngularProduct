@@ -1,8 +1,8 @@
 
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Product } from './product';
-
+import{ ProductService} from './product.service';
 
 //export class Product {
 //   id: number;
@@ -10,14 +10,15 @@ import { Product } from './product';
 //  description: string;
 //}
 
- const PRODUCTS: Product[] = [
-        { id: 1, name: 'Space vehicle', description:'A space vehicle is a rocket-powered vehicle' }
-      , { id: 3, name: 'Mars Naval', description:'Armed ship taht used in the ocean of planet Mars'}
-      , { id: 4, name: 'Moonari', description:'A best vehicle used on the surface of moon'}       
-           
-            ];
-              
+//We add a constructor that also defines a private property.
+//We add to the component's providers metadata.
 
+//The constructor itself does nothing. The parameter simultaneously defines 
+//a private heroService property and identifies it as a HeroService injection site.//
+//Now Angular will know to supply an instance of the HeroService 
+//when it creates a new AppComponent.
+  
+ 
 @Component({
 
   //selector: '#my-app', //means <div id ="my-app">
@@ -58,15 +59,15 @@ import { Product } from './product';
               <h2>My Products</h2>
            <ul class="products"> 
                 <li *ngFor = "let product of products"
-                      [class.selected]="product === selectedproduct"
+                      [class.selected]="product === selectedProduct"
                                                   (click)="onSelect(product)">
-                   <span class = "badge">{{product.id}},</span>
-                          {{product.name}}:-
+                   <span class = "badge">{{product.id}}</span>
+                          {{product.name}}
                           {{product.description}}
                 </li>
             </ul>
-  <my-product-detail>[product]="selectedProduct"></my-product-detail>`
-  ,
+   <my-product-detail>[product]="selectedProduct"></my-product-detail>`
+    ,
 
       styles: [
                  `
@@ -117,9 +118,13 @@ import { Product } from './product';
                     margin-right: .8em;
                     border-radius: 4px 0 0 4px;
                   }`
-                ]
+                ],
+     providers: [ProductService]
+     //The providers array tells Angular to create a fresh 
+   //  instance of the ProductService when it creates a new AppComponent.
+      
         })
-export class AppComponent {
+export class AppComponent implements OnInit {
   
   title = 'Our Products!';
   
@@ -130,11 +135,35 @@ export class AppComponent {
 //                 description:'A space vehicle is a rocket-powered vehicle'  
 //                      };
  //const cant used for objects  here but possible outside
-   
-   products = PRODUCTS;
-  selectedProduct: Product;
+    
+   products: Product[];
+  // products = PRODUCTS;
+  selectedProduct: Product;  
+  constructor(private productService: ProductService) { }
   
-  onSelect(product: Product): void {
+//  The Hero Service makes a Promise
+//A Promise is ... well it's a promise to call us back later 
+//when the results are ready. We ask an asynchronous service 
+//to do some work and give it a callback function. 
+//  It does that work (somewhere) and eventually 
+//it calls our function with the results of the work or an error.
+  
+  
+   getProducts(): void {
+    this.productService.getProducts().then(products => this.products = products);
+  }
+  //The ngOnInit Lifecycle Hook
+ // Angular offers a number of interfaces for tapping into
+  // critical moments in the component lifecycle: 
+  //at creation, after each change, and at its eventual 
+  //destruction.Each interface has a single method. 
+  //When the component implements that method, Angular calls
+  // it at the appropriate time.
+    ngOnInit(): void {
+    this.getProducts();
+  }
+  
+   onSelect(product: Product): void {
   this.selectedProduct = product;
      }
 
