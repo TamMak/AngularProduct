@@ -10,21 +10,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 //Decorator component and input
 var core_1 = require('@angular/core');
-var product_1 = require('./product');
+var router_1 = require('@angular/router');
+//import {Location} from '@angular/common';
+var product_service_1 = require('./product.service');
 //we created metadata
 var ProductDetailComponent = (function () {
-    function ProductDetailComponent() {
+    function ProductDetailComponent(productService, route, location) {
+        this.productService = productService;
+        this.route = route;
+        this.location = location;
     }
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', product_1.Product)
-    ], ProductDetailComponent.prototype, "product", void 0);
+    ProductDetailComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.route.params.forEach(function (params) {
+            var id = +params['id'];
+            _this.productService.getProduct(id)
+                .then(function (product) { return _this.product = product; });
+        });
+    };
     ProductDetailComponent = __decorate([
         core_1.Component({
+            moduleId: module.id,
             selector: 'my-product-detail',
-            template: "<div *ngIf=\"product\">\n            <h2>{{product.name}}!</h2>\n          <div><label>Id: </label>\n              {{product.id}}\n          </div>\n          <div>\n              <label>Name: </label>\n              <input [(ngModel)]=\"product.name\" placeholder=\"name\"/>\n          </div>\n        </div>  "
+            templateUrl: 'product-detail.component.html',
+            styleUrls: ['hero-detail.component.css']
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [product_service_1.ProductService, router_1.ActivatedRoute, Location])
     ], ProductDetailComponent);
     return ProductDetailComponent;
 }());

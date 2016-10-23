@@ -4,3 +4,9 @@
 /app.module.js.map
 /main.js
 /main.js.map
+/app-routing.module.js
+/app-routing.module.js.map
+/calculate-price.pipe.js
+/calculate-price.pipe.js.map
+/calculate-price.js
+/calculate-price.js.map

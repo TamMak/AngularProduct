@@ -26,5 +26,13 @@ export class ProductService {
 //  We're simulating the behavior of an ultra-fast, 
 //zero-latency server, by returning an immediately
 // resolved Promise with our mock heroes as the result.
-    
+    getProductsSlowly(): Promise<Product[]> {
+    return new Promise<Product[]>(resolve => setTimeout(resolve, 2000)) // delay 2 seconds
+                                            .then(() => this.getProducts());
+                                        }
+
+  getProduct(id: number): Promise<Product> {
+                    return this.getProducts()
+                            .then(products => products.find(product => product.id === id));
+                }
 }

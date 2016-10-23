@@ -26,6 +26,18 @@ var ProductService = (function () {
     ProductService.prototype.getProducts = function () {
         return Promise.resolve(mock_products_1.PRODUCTS);
     };
+    //  We're simulating the behavior of an ultra-fast, 
+    //zero-latency server, by returning an immediately
+    // resolved Promise with our mock heroes as the result.
+    ProductService.prototype.getProductsSlowly = function () {
+        var _this = this;
+        return new Promise(function (resolve) { return setTimeout(resolve, 2000); }) // delay 2 seconds
+            .then(function () { return _this.getProducts(); });
+    };
+    ProductService.prototype.getProduct = function (id) {
+        return this.getProducts()
+            .then(function (products) { return products.find(function (product) { return product.id === id; }); });
+    };
     ProductService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [])
